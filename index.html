@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Огнище — Луксозен Ресторант Пловдив</title>
+  <meta name="description" content="Огнище — изискана кухня и незабравими вечери в сърцето на Пловдив. Резервирайте своята маса." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #080808;
+      --bg2:    #0e0e0e;
+      --gold:   #c9a84c;
+      --gold2:  #e8c96a;
+      --text:   #f0ece4;
+      --muted:  #8a8070;
+      --border: rgba(201,168,76,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 6%;
+      transition: all .4s;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 6%;
+    }
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 300;
+      color: var(--gold); text-decoration: none;
+      letter-spacing: 4px; text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: rgba(240,236,228,0.7);
+      font-size: .78rem; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; transition: color .3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-reserve {
+      font-size: .75rem; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--bg);
+      background: var(--gold); border: none; cursor: pointer;
+      padding: .65rem 1.5rem; font-family: 'Inter', sans-serif;
+      transition: all .3s;
+    }
+    .nav-reserve:hover { background: var(--gold2); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; height: 100vh; min-height: 600px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to bottom,
+        rgba(8,8,8,0.3) 0%,
+        rgba(8,8,8,0.5) 50%,
+        rgba(8,8,8,0.85) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center; padding: 0 2rem;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: .68rem; letter-spacing: 5px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--gold); padding-bottom: .4rem;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 300; line-height: 1;
+      color: #fff; letter-spacing: 8px;
+      text-transform: uppercase; margin-bottom: .5rem;
+    }
+    .hero-title em {
+      font-style: italic; color: var(--gold);
+    }
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 300; font-style: italic;
+      color: rgba(240,236,228,0.7); margin-bottom: 3rem;
+      letter-spacing: 2px;
+    }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-gold {
+      padding: .9rem 2.5rem; font-size: .75rem; letter-spacing: 3px;
+      text-transform: uppercase; font-family: 'Inter', sans-serif;
+      font-weight: 500; text-decoration: none; transition: all .3s;
+      background: var(--gold); color: #000;
+    }
+    .btn-gold:hover { background: var(--gold2); transform: translateY(-2px); }
+    .btn-outline {
+      padding: .9rem 2.5rem; font-size: .75rem; letter-spacing: 3px;
+      text-transform: uppercase; font-family: 'Inter', sans-serif;
+      font-weight: 500; text-decoration: none; transition: all .3s;
+      background: transparent; color: #fff;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-scroll {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    }
+    .hero-scroll span {
+      font-size: .6rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollDown 2s ease-in-out infinite;
+    }
+    @keyframes scrollDown {
+      0% { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* ── DIVIDER ── */
+    .gold-divider {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1rem; margin: 0 auto 3rem;
+    }
+    .gold-divider::before, .gold-divider::after {
+      content: ''; flex: 1; max-width: 80px; height: 1px;
+      background: var(--gold); opacity: .4;
+    }
+    .gold-divider span {
+      color: var(--gold); font-size: 1rem; letter-spacing: 4px;
+    }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 6rem 6%; }
+    .section-tag {
+      display: block; font-size: .65rem; letter-spacing: 5px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1rem; text-align: center;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300; color: #fff;
+      text-align: center; letter-spacing: 3px;
+      text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .section-sub {
+      text-align: center; color: var(--muted); font-size: .9rem;
+      max-width: 500px; margin: 0 auto 4rem; line-height: 1.8;
+    }
+
+    /* ── MENU ── */
+    #menu { background: var(--bg2); }
+    .menu-tabs {
+      display: flex; justify-content: center; gap: 0;
+      margin-bottom: 3rem; border-bottom: 1px solid var(--border);
+    }
+    .menu-tab {
+      font-size: .7rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); padding: .8rem 2rem; cursor: pointer;
+      background: none; border: none; font-family: 'Inter', sans-serif;
+      transition: all .3s; position: relative; color: var(--muted);
+    }
+    .menu-tab::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+      height: 1px; background: var(--gold);
+      transform: scaleX(0); transition: transform .3s;
+    }
+    .menu-tab.active, .menu-tab:hover { color: var(--gold); }
+    .menu-tab.active::after { transform: scaleX(1); }
+
+    .menu-section { display: none; }
+    .menu-section.active { display: grid; grid-template-columns: 1fr 1fr; gap: 0; max-width: 900px; margin: 0 auto; }
+
+    .menu-item {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 1.4rem 1.5rem; border-bottom: 1px solid rgba(201,168,76,0.08);
+      gap: 1rem;
+    }
+    .menu-item:hover { background: rgba(201,168,76,0.03); }
+    .menu-item-left { flex: 1; }
+    .menu-item-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: #fff; margin-bottom: .25rem;
+    }
+    .menu-item-desc { font-size: .75rem; color: var(--muted); line-height: 1.5; }
+    .menu-item-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: var(--gold); white-space: nowrap;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center; max-width: 1200px; margin: 0 auto;
+      padding: 6rem 6%;
+    }
+    .about-img-wrap { position: relative; }
+    .about-img {
+      width: 100%; aspect-ratio: 3/4; object-fit: cover;
+      display: block;
+    }
+    .about-img-placeholder {
+      width: 100%; aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #1a1510, #0e0c08);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; color: var(--muted); letter-spacing: 2px;
+    }
+    .about-frame {
+      position: absolute; top: -1.5rem; left: -1.5rem;
+      right: 1.5rem; bottom: 1.5rem;
+      border: 1px solid var(--gold); opacity: .3; pointer-events: none;
+    }
+    .about-badge {
+      position: absolute; bottom: -1.5rem; right: -1.5rem;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: var(--gold);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .about-badge-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; font-weight: 600; color: #000; line-height: 1;
+    }
+    .about-badge-txt {
+      font-size: .55rem; letter-spacing: 2px; text-transform: uppercase;
+      color: #000; text-align: center; line-height: 1.3;
+    }
+    .about-content { }
+    .about-tag {
+      font-size: .65rem; letter-spacing: 5px; text-transform: uppercase;
+      color: var(--gold); display: block; margin-bottom: 1rem;
+    }
+    .about-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 300; color: #fff; line-height: 1.2;
+      letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .about-title em { font-style: italic; color: var(--gold); }
+    .about-text {
+      color: var(--muted); line-height: 1.9; font-size: .9rem;
+      margin-bottom: 2rem;
+    }
+    .about-stats {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .about-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem; color: var(--gold); line-height: 1;
+    }
+    .about-stat-lbl { font-size: .7rem; letter-spacing: 1px; color: var(--muted); margin-top: .3rem; }
+
+    /* ── GALLERY ── */
+    #gallery { background: var(--bg2); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 1rem; max-width: 1100px; margin: 0 auto;
+    }
+    .gallery-item {
+      overflow: hidden; cursor: pointer; position: relative;
+    }
+    .gallery-item:nth-child(1) { grid-column: span 2; }
+    .gallery-item:nth-child(4) { grid-column: span 2; }
+    .gallery-placeholder {
+      width: 100%; aspect-ratio: 16/10;
+      background: linear-gradient(135deg, #1a1510, #0e0c08);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .5s;
+    }
+    .gallery-item:nth-child(1) .gallery-placeholder,
+    .gallery-item:nth-child(4) .gallery-placeholder { aspect-ratio: 21/10; }
+    .gallery-item:hover .gallery-placeholder { transform: scale(1.03); }
+    .gallery-icon {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .8rem; letter-spacing: 3px;
+      color: var(--muted); text-transform: uppercase;
+    }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: rgba(201,168,76,0);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .3s;
+    }
+    .gallery-item:hover .gallery-overlay { background: rgba(201,168,76,0.1); }
+
+    /* ── RESERVATION ── */
+    #reservation {
+      background: linear-gradient(135deg, #0e0c08 0%, #080808 100%);
+      position: relative; overflow: hidden;
+    }
+    #reservation::before {
+      content: '';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .reservation-inner { max-width: 700px; margin: 0 auto; position: relative; }
+    .reservation-form {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: .5rem; }
+    .form-group.full { grid-column: span 2; }
+    .form-group label {
+      font-size: .65rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(201,168,76,0.04);
+      border: 1px solid var(--border);
+      color: var(--text); padding: .85rem 1rem;
+      font-family: 'Inter', sans-serif; font-size: .85rem;
+      outline: none; transition: border-color .3s;
+      -webkit-appearance: none;
+    }
+    .form-group select option { background: #0e0e0e; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--gold); }
+    .form-group textarea { resize: none; height: 100px; }
+    .form-submit {
+      grid-column: span 2; text-align: center; margin-top: 1rem;
+    }
+    .btn-submit {
+      padding: 1rem 4rem; font-size: .75rem; letter-spacing: 3px;
+      text-transform: uppercase; font-family: 'Inter', sans-serif;
+      font-weight: 500; background: var(--gold); color: #000;
+      border: none; cursor: pointer; transition: all .3s;
+    }
+    .btn-submit:hover { background: var(--gold2); transform: translateY(-2px); }
+
+    /* ── CONTACT ── */
+    #contact {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: start;
+      max-width: 1000px; margin: 0 auto; padding: 6rem 6%;
+    }
+    .contact-info-tag {
+      font-size: .65rem; letter-spacing: 5px; text-transform: uppercase;
+      color: var(--gold); display: block; margin-bottom: 1rem;
+    }
+    .contact-info-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem; font-weight: 300; color: #fff;
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 2rem; line-height: 1.2;
+    }
+    .contact-item { margin-bottom: 1.5rem; }
+    .contact-item-label {
+      font-size: .62rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .4rem;
+    }
+    .contact-item-value { color: var(--text); font-size: .9rem; line-height: 1.6; }
+    .contact-item-value a { color: var(--text); text-decoration: none; transition: color .3s; }
+    .contact-item-value a:hover { color: var(--gold); }
+    .contact-hours { }
+    .hours-row {
+      display: flex; justify-content: space-between;
+      padding: .6rem 0; border-bottom: 1px solid rgba(201,168,76,0.08);
+      font-size: .85rem;
+    }
+    .hours-day { color: var(--muted); }
+    .hours-time { color: var(--text); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #000;
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 6%;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; color: var(--gold);
+      letter-spacing: 4px; text-transform: uppercase;
+    }
+    .footer-copy { font-size: .72rem; color: var(--muted); letter-spacing: 1px; }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a {
+      font-size: .7rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color .3s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      #about { grid-template-columns: 1fr; gap: 3rem; }
+      .menu-section.active { grid-template-columns: 1fr; }
+      .reservation-form { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: span 1; }
+      .form-submit { grid-column: span 1; }
+      #contact { grid-template-columns: 1fr; gap: 3rem; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item:nth-child(1),
+      .gallery-item:nth-child(4) { grid-column: span 2; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="logo">Огнище</a>
+    <ul class="nav-links">
+      <li><a href="#menu">Меню</a></li>
+      <li><a href="#about">За нас</a></li>
+      <li><a href="#gallery">Галерия</a></li>
+      <li><a href="#contact">Контакти</a></li>
+    </ul>
+    <button class="nav-reserve" onclick="document.getElementById('reservation').scrollIntoView({behavior:'smooth'})">Резервация</button>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-tag reveal">Ресторант · Пловдив</span>
+      <h1 class="hero-title reveal">
+        <em>Огнище</em>
+      </h1>
+      <p class="hero-sub reveal">Изкуството на вкуса. Магията на мига.</p>
+      <div class="hero-btns reveal">
+        <a href="#reservation" class="btn-gold">Резервирай маса</a>
+        <a href="#menu" class="btn-outline">Разгледай менюто</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <span class="section-tag reveal">— Нашето меню —</span>
+    <h2 class="section-title reveal">Изискана Кухня</h2>
+    <p class="section-sub reveal">Всяко ястие е разказ — от избора на съставките до последния щрих на чинията.</p>
+
+    <div class="menu-tabs">
+      <button class="menu-tab active" onclick="showMenu('predeli', this)">Предястия</button>
+      <button class="menu-tab" onclick="showMenu('main', this)">Основни</button>
+      <button class="menu-tab" onclick="showMenu('desserts', this)">Десерти</button>
+      <button class="menu-tab" onclick="showMenu('wines', this)">Вина</button>
+    </div>
+
+    <div id="predeli" class="menu-section active reveal">
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Тартар от говеждо</div>
+          <div class="menu-item-desc">Каперси, корнишони, жълтък, пармезан</div>
+        </div>
+        <div class="menu-item-price">24 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Гъши черен дроб</div>
+          <div class="menu-item-desc">Бриош, конфитюр от смокини, балсамово</div>
+        </div>
+        <div class="menu-item-price">32 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Крем супа от тиква</div>
+          <div class="menu-item-desc">Кокосово мляко, джинджифил, тиквени семки</div>
+        </div>
+        <div class="menu-item-price">14 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Карпачо от октопод</div>
+          <div class="menu-item-desc">Зехтин, лимон, каперси, рукола</div>
+        </div>
+        <div class="menu-item-price">28 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Бурата с домати</div>
+          <div class="menu-item-desc">Чери домати, базилик, зехтин Extra Virgin</div>
+        </div>
+        <div class="menu-item-price">18 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Крудите от сьомга</div>
+          <div class="menu-item-desc">Авокадо, манго, цитрусова дресинг</div>
+        </div>
+        <div class="menu-item-price">26 лв</div>
+      </div>
+    </div>
+
+    <div id="main" class="menu-section reveal">
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Телешко филе Уелингтън</div>
+          <div class="menu-item-desc">Прошуто, дюксел, бутер тесто, сос деми-гласе</div>
+        </div>
+        <div class="menu-item-price">68 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Агнешки рак на скара</div>
+          <div class="menu-item-desc">Розмарин, чесън, картофено пюре с трюфел</div>
+        </div>
+        <div class="menu-item-price">52 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Ризото с морски дарове</div>
+          <div class="menu-item-desc">Скариди, миди, калмари, шафран, пармезан</div>
+        </div>
+        <div class="menu-item-price">44 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Пача от черноморска риба</div>
+          <div class="menu-item-desc">Сезонна риба, зеленчуци, провансалски билки</div>
+        </div>
+        <div class="menu-item-price">38 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Патешко конфи</div>
+          <div class="menu-item-desc">Леща, портокалов сос, хрупкава кожа</div>
+        </div>
+        <div class="menu-item-price">46 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Черна паста с трюфел</div>
+          <div class="menu-item-desc">Ловджийски трюфел, пармезан, яйчен жълтък</div>
+        </div>
+        <div class="menu-item-price">42 лв</div>
+      </div>
+    </div>
+
+    <div id="desserts" class="menu-section reveal">
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Шоколадов фондан</div>
+          <div class="menu-item-desc">Белгийски шоколад, ванилов сладолед, малини</div>
+        </div>
+        <div class="menu-item-price">16 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Крем брюле с лавандула</div>
+          <div class="menu-item-desc">Ванилия, карамелена коричка, горски плодове</div>
+        </div>
+        <div class="menu-item-price">14 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Тирамису</div>
+          <div class="menu-item-desc">Маскарпоне, еспресо, какао, савоярди</div>
+        </div>
+        <div class="menu-item-price">14 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Сорбе от манго</div>
+          <div class="menu-item-desc">Манго, лайм, пресна мента</div>
+        </div>
+        <div class="menu-item-price">12 лв</div>
+      </div>
+    </div>
+
+    <div id="wines" class="menu-section reveal">
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Villa Melnik Keratsuda</div>
+          <div class="menu-item-desc">Мелник 55, България · 2021</div>
+        </div>
+        <div class="menu-item-price">65 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Château Margaux</div>
+          <div class="menu-item-desc">Каберне Совиньон, Бордо · 2018</div>
+        </div>
+        <div class="menu-item-price">320 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Bessa Valley Enira</div>
+          <div class="menu-item-desc">Мерло, България · 2020</div>
+        </div>
+        <div class="menu-item-price">78 лв</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item-left">
+          <div class="menu-item-name">Veuve Clicquot Brut</div>
+          <div class="menu-item-desc">Шампанско, Франция · NV</div>
+        </div>
+        <div class="menu-item-price">180 лв</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-img-wrap reveal">
+      <div class="about-img-placeholder">Снимка на шеф-готвача</div>
+      <div class="about-frame"></div>
+      <div class="about-badge">
+        <span class="about-badge-num">12</span>
+        <span class="about-badge-txt">години традиция</span>
+      </div>
+    </div>
+    <div class="about-content reveal">
+      <span class="about-tag">— За нас —</span>
+      <h2 class="about-title">Страст към<br><em>съвършенството</em></h2>
+      <p class="about-text">
+        В Огнище вярваме, че храната е повече от изхранване — тя е изкуство, ритуал и спомен. Нашият екип от вдъхновени готвачи съчетава традиционни български рецепти с техниките на съвременната висша кухня.
+      </p>
+      <p class="about-text">
+        Всяка съставка е внимателно избрана от местни производители. Виното идва от най-добрите български и европейски изби. Атмосферата е създадена, за да направи всеки момент незабравим.
+      </p>
+      <a href="#reservation" class="btn-gold">Резервирайте маса</a>
+      <div class="about-stats">
+        <div>
+          <div class="about-stat-num">12+</div>
+          <div class="about-stat-lbl">Години опит</div>
+        </div>
+        <div>
+          <div class="about-stat-num">48</div>
+          <div class="about-stat-lbl">Места</div>
+        </div>
+        <div>
+          <div class="about-stat-num">4.9★</div>
+          <div class="about-stat-lbl">Оценка</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <span class="section-tag reveal">— Галерия —</span>
+    <h2 class="section-title reveal">Атмосфера</h2>
+    <p class="section-sub reveal">Всяка вечер е уникална. Всяка маса — специална.</p>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><span class="gallery-icon">Интериор</span></div>
+        <div class="gallery-overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><span class="gallery-icon">Ястие</span></div>
+        <div class="gallery-overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><span class="gallery-icon">Вино</span></div>
+        <div class="gallery-overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><span class="gallery-icon">Терасата</span></div>
+        <div class="gallery-overlay"></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder"><span class="gallery-icon">Детайл</span></div>
+        <div class="gallery-overlay"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESERVATION -->
+  <section id="reservation">
+    <span class="section-tag reveal">— Резервации —</span>
+    <h2 class="section-title reveal">Запазете Маса</h2>
+    <p class="section-sub reveal">Резервирайте вашата маса онлайн или се свържете с нас по телефона.</p>
+    <div class="reservation-inner">
+      <form class="reservation-form reveal" onsubmit="handleReservation(event)">
+        <div class="form-group">
+          <label>Ime и фамилия</label>
+          <input type="text" placeholder="Иван Петров" required />
+        </div>
+        <div class="form-group">
+          <label>Телефон</label>
+          <input type="tel" placeholder="+359 88 888 8888" required />
+        </div>
+        <div class="form-group">
+          <label>Дата</label>
+          <input type="date" required />
+        </div>
+        <div class="form-group">
+          <label>Час</label>
+          <select required>
+            <option value="">Изберете час</option>
+            <option>18:00</option>
+            <option>18:30</option>
+            <option>19:00</option>
+            <option>19:30</option>
+            <option>20:00</option>
+            <option>20:30</option>
+            <option>21:00</option>
+            <option>21:30</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Брой гости</label>
+          <select required>
+            <option value="">Изберете</option>
+            <option>1 гост</option>
+            <option>2 гости</option>
+            <option>3 гости</option>
+            <option>4 гости</option>
+            <option>5 гости</option>
+            <option>6+ гости</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Повод</label>
+          <select>
+            <option value="">Без специален повод</option>
+            <option>Рожден ден</option>
+            <option>Годишнина</option>
+            <option>Бизнес вечеря</option>
+            <option>Романтична вечеря</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Специални желания</label>
+          <textarea placeholder="Алергии, предпочитания за маса, специални изисквания..."></textarea>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn-submit">Изпратете резервация</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="reveal">
+      <span class="contact-info-tag">— Контакти —</span>
+      <h2 class="contact-info-title">Намерете<br>Ни</h2>
+      <div class="contact-item">
+        <div class="contact-item-label">Адрес</div>
+        <div class="contact-item-value">ул. Княз Александър I №15<br>Пловдив, България</div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-label">Телефон</div>
+        <div class="contact-item-value">
+          <a href="tel:+35932123456">+359 32 123 456</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-label">Имейл</div>
+        <div class="contact-item-value">
+          <a href="mailto:info@ognishte.bg">info@ognishte.bg</a>
+        </div>
+      </div>
+    </div>
+    <div class="contact-hours reveal">
+      <div class="contact-item-label" style="margin-bottom:1rem">Работно Време</div>
+      <div class="hours-row"><span class="hours-day">Понеделник — Четвъртък</span><span class="hours-time">18:00 — 23:00</span></div>
+      <div class="hours-row"><span class="hours-day">Петък — Събота</span><span class="hours-time">17:00 — 00:00</span></div>
+      <div class="hours-row"><span class="hours-day">Неделя</span><span class="hours-time">17:00 — 23:00</span></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Огнище</div>
+    <div class="footer-copy">© 2026 Огнище. Изработено от <a href="https://webnova.bg" style="color:var(--gold);text-decoration:none;">Webnova</a></div>
+    <div class="footer-links">
+      <a href="#menu">Меню</a>
+      <a href="#reservation">Резервация</a>
+      <a href="#contact">Контакти</a>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky nav
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Menu tabs
+    function showMenu(id, btn) {
+      document.querySelectorAll('.menu-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Reservation
+    function handleReservation(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.btn-submit');
+      btn.textContent = '✓ Резервацията е изпратена!';
+      btn.style.background = '#2d7a4f';
+      btn.style.color = '#fff';
+      setTimeout(() => {
+        btn.textContent = 'Изпратете резервация';
+        btn.style.background = '';
+        btn.style.color = '';
+        e.target.reset();
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
